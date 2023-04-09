@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const GridButton = ({ row, col, toggleButton, isOn, label }) => {
@@ -24,7 +24,14 @@ const App = () => {
     });
   });
 
-  const [grid, setGrid] = useState(initialGrid);
+  const [grid, setGrid] = useState(() => {
+    const savedGrid = localStorage.getItem('gridState');
+    return savedGrid ? JSON.parse(savedGrid) : initialGrid;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('gridState', JSON.stringify(grid));
+  }, [grid]);
 
   const toggleButton = (row, col) => {
     setGrid((prevGrid) => {
