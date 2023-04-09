@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import './App.css';
 
-const GridButton = ({ row, col, toggleButton, isOn }) => {
+const GridButton = ({ row, col, toggleButton, isOn, label }) => {
   const handleClick = () => {
-    toggleButton(row, col);
+    if (row !== 0 && col !== 0) {
+      toggleButton(row, col);
+    }
   };
 
   return (
-    <button className={`grid-button ${isOn ? 'on' : 'off'}`} onClick={handleClick}>
-      {isOn ? 'On' : 'Off'}
+    <button className={`grid-button ${isOn ? 'on' : 'off'} ${row === 0 || col === 0 ? 'header' : ''}`} onClick={handleClick}>
+      {label}
     </button>
   );
 };
@@ -16,20 +18,46 @@ const GridButton = ({ row, col, toggleButton, isOn }) => {
 const App = () => {
   const rows = 7;
   const cols = 8;
-  const initialGrid = Array.from({ length: rows }, () => Array(cols).fill(false));
+  const initialGrid = Array.from({ length: rows }, (_, rowIndex) => {
+    return Array.from({ length: cols }, (_, colIndex) => {
+      return rowIndex === 0 || colIndex === 0 ? null : false;
+    });
+  });
 
   const [grid, setGrid] = useState(initialGrid);
 
   const toggleButton = (row, col) => {
-    setGrid(prevGrid => {
-      const newGrid = prevGrid.map((rowArr, i) => rowArr.map((cell, j) => (i === row && j === col) ? !cell : cell));
+    setGrid((prevGrid) => {
+      const newGrid = prevGrid.map((rowArr, i) =>
+        rowArr.map((cell, j) => (i === row && j === col ? !cell : cell))
+      );
       return newGrid;
     });
   };
 
+  const getButtonLabel = (row, col) => {
+    if (row === 0) {
+      const days = [
+        'Week',
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ];
+      return days[col];
+    } else if (col === 0) {
+      return row === 0 ? 'Week' : row.toString();
+    } else {
+      return grid[row][col] ? 'On' : 'Off';
+    }
+  };
+
   return (
     <div className="App">
-      <h1>7x8 Grid of Buttons</h1>
+      <h1>Calendar Grid</h1>
       <div className="grid-container">
         {grid.map((rowArr, rowIndex) => (
           <div key={rowIndex} className="grid-row">
@@ -40,6 +68,7 @@ const App = () => {
                 col={colIndex}
                 toggleButton={toggleButton}
                 isOn={isOn}
+                label={getButtonLabel(rowIndex, colIndex)}
               />
             ))}
           </div>
