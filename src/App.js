@@ -73,9 +73,14 @@ const App = () => {
     }
   };
 
+  const getGridTitle = () => {
+    const gridTitles = ['Habit 1', 'Habit 2', 'Third Habit'];
+    return gridTitles[currentGridIndex];
+  };
+
   return (
     <div className="App">
-      <h1>Calendar Grids</h1>
+      <h1>{getGridTitle()}</h1>
       <div className="grid-container">
         {grids[currentGridIndex].map((rowArr, rowIndex) => (
           <div key={rowIndex} className="grid-row">
