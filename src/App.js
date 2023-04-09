@@ -53,6 +53,11 @@ const App = () => {
     }
   };
 
+  const getGridStartingDay = () => {
+    const startingDays = [7, 4, 1]; // Saturday, Wednesday, Sunday
+    return startingDays[currentGridIndex];
+  };
+
   const getButtonLabel = (row, col) => {
     if (row === 0) {
       const days = [
@@ -69,7 +74,8 @@ const App = () => {
     } else if (col === 0) {
       return row === 0 ? 'Week' : row.toString();
     } else {
-      return grids[currentGridIndex][row][col] ? 'On' : 'Off';
+      const dayNumber = (row - 1) * 7 + col - getGridStartingDay() + 1;
+      return dayNumber >= 1 && dayNumber <= 31 ? dayNumber.toString() : '';
     }
   };
 
