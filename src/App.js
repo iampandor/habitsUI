@@ -3,9 +3,7 @@ import './App.css';
 
 const GridButton = ({ row, col, toggleButton, isOn, label }) => {
   const handleClick = () => {
-    if (row !== 0 && col !== 0) {
-      toggleButton(row, col);
-    }
+    toggleButton(row, col);
   };
 
   return (
@@ -18,28 +16,41 @@ const GridButton = ({ row, col, toggleButton, isOn, label }) => {
 const App = () => {
   const rows = 7;
   const cols = 8;
-  const initialGrid = Array.from({ length: rows }, (_, rowIndex) => {
-    return Array.from({ length: cols }, (_, colIndex) => {
-      return rowIndex === 0 || colIndex === 0 ? null : false;
-    });
+  const gridCount = 3;
+  const initialGrid = Array.from({ length: gridCount }, () =>
+    Array.from({ length: rows }, (_, rowIndex) =>
+      Array.from({ length: cols }, (_, colIndex) =>
+        rowIndex === 0 || colIndex === 0 ? null : false
+      )
+    )
+  );
+
+  const [grids, setGrids] = useState(() => {
+    const savedGrids = localStorage.getItem('gridStates');
+    return savedGrids ? JSON.parse(savedGrids) : initialGrid;
   });
 
-  const [grid, setGrid] = useState(() => {
-    const savedGrid = localStorage.getItem('gridState');
-    return savedGrid ? JSON.parse(savedGrid) : initialGrid;
-  });
+  const [currentGridIndex, setCurrentGridIndex] = useState(0);
 
   useEffect(() => {
-    localStorage.setItem('gridState', JSON.stringify(grid));
-  }, [grid]);
+    localStorage.setItem('gridStates', JSON.stringify(grids));
+  }, [grids]);
 
   const toggleButton = (row, col) => {
-    setGrid((prevGrid) => {
-      const newGrid = prevGrid.map((rowArr, i) =>
-        rowArr.map((cell, j) => (i === row && j === col ? !cell : cell))
-      );
-      return newGrid;
-    });
+    if (row === 0 && col === 0) {
+      setCurrentGridIndex((currentGridIndex + 1) % gridCount);
+    } else {
+      setGrids((prevGrids) => {
+        const newGrids = prevGrids.map((grid, gridIndex) =>
+          gridIndex === currentGridIndex
+            ? grid.map((rowArr, i) =>
+                rowArr.map((cell, j) => (i === row && j === col ? !cell : cell))
+              )
+            : grid
+        );
+        return newGrids;
+      });
+    }
   };
 
   const getButtonLabel = (row, col) => {
@@ -58,15 +69,15 @@ const App = () => {
     } else if (col === 0) {
       return row === 0 ? 'Week' : row.toString();
     } else {
-      return grid[row][col] ? 'On' : 'Off';
+      return grids[currentGridIndex][row][col] ? 'On' : 'Off';
     }
   };
 
   return (
     <div className="App">
-      <h1>Calendar Grid</h1>
+      <h1>Calendar Grids</h1>
       <div className="grid-container">
-        {grid.map((rowArr, rowIndex) => (
+        {grids[currentGridIndex].map((rowArr, rowIndex) => (
           <div key={rowIndex} className="grid-row">
             {rowArr.map((isOn, colIndex) => (
               <GridButton
