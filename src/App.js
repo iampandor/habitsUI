@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-const GridButton = ({ row, col, toggleButton, isOn, label }) => {
+const GridButton = ({ row, col, toggleButton, value, label, color, disabled }) => {
   const handleClick = () => {
     toggleButton(row, col);
   };
 
   return (
-    <button className={`grid-button ${isOn ? 'on' : 'off'} ${row === 0 || col === 0 ? 'header' : ''}`} onClick={handleClick}>
+    <button
+      className={`grid-button ${row === 0 || col === 0 ? 'header' : ''}`}
+      onClick={handleClick}
+      style={{ backgroundColor: color }}
+      disabled={disabled}
+    >
       {label}
     </button>
   );
@@ -20,10 +25,17 @@ const App = () => {
   const initialGrid = Array.from({ length: gridCount }, () =>
     Array.from({ length: rows }, (_, rowIndex) =>
       Array.from({ length: cols }, (_, colIndex) =>
-        rowIndex === 0 || colIndex === 0 ? null : false
+        rowIndex === 0 || colIndex === 0 ? null : 0
       )
     )
   );
+
+  const valueToColor = (value) => {
+    if (value === null) return ''; // For header cells
+    const r = Math.round((1 - value) * 255);
+    const g = Math.round(value * 255);
+    return `rgb(${r}, ${g}, 0)`;
+  };
 
   const [grids, setGrids] = useState(() => {
     const savedGrids = localStorage.getItem('gridStates');
@@ -90,14 +102,16 @@ const App = () => {
       <div className="grid-container">
         {grids[currentGridIndex].map((rowArr, rowIndex) => (
           <div key={rowIndex} className="grid-row">
-            {rowArr.map((isOn, colIndex) => (
+            {rowArr.map((value, colIndex) => (
               <GridButton
                 key={`${rowIndex}-${colIndex}`}
                 row={rowIndex}
                 col={colIndex}
                 toggleButton={toggleButton}
-                isOn={isOn}
+                value={value}
                 label={getButtonLabel(rowIndex, colIndex)}
+                color={valueToColor(value)}
+                disabled={rowIndex === 0 || colIndex === 0}
               />
             ))}
           </div>
