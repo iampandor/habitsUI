@@ -95,10 +95,20 @@ const App = () => {
     const gridTitles = ['Habit 1', 'Habit 2', 'Third Habit'];
     return gridTitles[currentGridIndex];
   };
+  
+  const switchGrid = () => {
+    setCurrentGridIndex((prevIndex) => (prevIndex + 1) % gridCount);
+  };
+
 
   return (
     <div className="App">
-      <h1>{getGridTitle()}</h1>
+      <div className="title-container">
+        <h1>{getGridTitle()}</h1>
+        <button className="switch-button" onClick={switchGrid}>
+          Switch Grid
+        </button>
+      </div>
       <div className="grid-container">
         {grids[currentGridIndex].map((rowArr, rowIndex) => (
           <div key={rowIndex} className="grid-row">
