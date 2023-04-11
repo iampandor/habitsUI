@@ -52,6 +52,15 @@ const initialGrid = [...habitGrids, summaryGrid];
     return savedGrids ? JSON.parse(savedGrids) : initialGrid;
   });
 
+  const [gridTitles, setGridTitles] = useState(
+    JSON.parse(localStorage.getItem("gridTitles")) || [
+      "Habit 1",
+      "Habit 2",
+      "Third Habit",
+      "Summary",
+    ]
+  );
+
   const [currentGridIndex, setCurrentGridIndex] = useState(0);
 
   useEffect(() => {
@@ -102,8 +111,15 @@ const initialGrid = [...habitGrids, summaryGrid];
   };
 
   const getGridTitle = () => {
-    const gridTitles = ['Habit 1', 'Habit 2', 'Third Habit', 'Summary'];
     return gridTitles[currentGridIndex];
+  };
+
+  const updateGridTitle = (e) => {
+    const newTitle = e.target.value;
+    const newGridTitles = [...gridTitles];
+    newGridTitles[currentGridIndex] = newTitle;
+    setGridTitles(newGridTitles);
+    localStorage.setItem("gridTitles", JSON.stringify(newGridTitles));
   };
   
   const switchGrid = () => {
@@ -135,6 +151,13 @@ const initialGrid = [...habitGrids, summaryGrid];
     <div className="App">
       <div className="title-container">
         <h1>{getGridTitle()}</h1>
+        {currentGridIndex !== gridCount - 1 && (
+          <input
+            className="title-input"
+            value={gridTitles[currentGridIndex]}
+            onChange={updateGridTitle}
+          />
+        )}
         <button className="switch-button" onClick={switchGrid}>
           Switch Grid
         </button>
