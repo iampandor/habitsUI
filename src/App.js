@@ -22,20 +22,23 @@ const App = () => {
   const rows = 7;
   const cols = 8;
   const gridCount = 4;
-  const initialGrid = [
-    ...Array.from({ length: gridCount }, () =>
-      Array.from({ length: rows }, (_, rowIndex) =>
-        Array.from({ length: cols }, (_, colIndex) =>
-          rowIndex === 0 || colIndex === 0 ? null : 0
-        )
-      )
-    ),
-    Array.from({ length: rows }, (_, rowIndex) =>
-      Array.from({ length: cols }, (_, colIndex) =>
-        rowIndex === 0 || colIndex === 0 ? null : 0
-      )
-    ),
-  ];
+  const habitGrids = Array.from({ length: gridCount }, () =>
+  Array.from({ length: rows }, (_, rowIndex) =>
+    Array.from({ length: cols }, (_, colIndex) =>
+      rowIndex === 0 || colIndex === 0 ? null : Math.random()
+    )
+  )
+);
+
+const summaryGrid = Array.from({ length: rows }, (_, rowIndex) =>
+  Array.from({ length: cols }, (_, colIndex) =>
+    rowIndex === 0 || colIndex === 0
+      ? null
+      : habitGrids.reduce((acc, grid) => acc + grid[rowIndex][colIndex], 0) / gridCount
+  )
+);
+
+const initialGrid = [...habitGrids, summaryGrid];
 
   const valueToColor = (value) => {
     if (value === null) return ''; // For header cells
@@ -104,8 +107,28 @@ const App = () => {
   };
   
   const switchGrid = () => {
-    setCurrentGridIndex((prevIndex) => (prevIndex + 1) % gridCount);
-  };
+    setCurrentGridIndex((prevIndex) => {
+      const newIndex = (prevIndex + 1) % gridCount;
+  
+      if (newIndex === gridCount - 1) {
+        // If the new index is the summary grid, update its values
+        const newGrids = [...grids];
+        for (let row = 1; row < rows; row++) {
+          for (let col = 1; col < cols; col++) {
+            const sum = newGrids
+              .slice(0, gridCount - 1)
+              .reduce((acc, grid) => acc + grid[row][col], 0);
+            const mean = sum / (gridCount - 1);
+            newGrids[newIndex][row][col] = mean;
+          }
+        }
+        setGrids(newGrids);
+        localStorage.setItem("grids", JSON.stringify(newGrids));
+      }
+  
+      return newIndex;
+    });
+  };  
 
 
   return (
