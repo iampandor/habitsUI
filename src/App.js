@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-const GridButton = ({ row, col, toggleButton, value, label, color, disabled }) => {
+const GridButton = ({ row, col, toggleButton, value, label, color, disabled, isReadOnly }) => {
   const handleClick = () => {
+    if (isReadOnly) return;
     toggleButton(row, col);
   };
 
@@ -11,12 +12,13 @@ const GridButton = ({ row, col, toggleButton, value, label, color, disabled }) =
       className={`grid-button ${row === 0 || col === 0 ? 'header' : ''}`}
       onClick={handleClick}
       style={{ backgroundColor: color }}
-      disabled={disabled}
+      disabled={disabled || isReadOnly}
     >
       {label}
     </button>
   );
 };
+
 
 const App = () => {
   const rows = 7;
@@ -175,6 +177,7 @@ const initialGrid = [...habitGrids, summaryGrid];
                 label={getButtonLabel(rowIndex, colIndex)}
                 color={valueToColor(value)}
                 disabled={rowIndex === 0 || colIndex === 0}
+                isReadOnly={currentGridIndex === gridCount - 1}
               />
             ))}
           </div>
