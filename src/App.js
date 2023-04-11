@@ -21,14 +21,21 @@ const GridButton = ({ row, col, toggleButton, value, label, color, disabled }) =
 const App = () => {
   const rows = 7;
   const cols = 8;
-  const gridCount = 3;
-  const initialGrid = Array.from({ length: gridCount }, () =>
+  const gridCount = 4;
+  const initialGrid = [
+    ...Array.from({ length: gridCount }, () =>
+      Array.from({ length: rows }, (_, rowIndex) =>
+        Array.from({ length: cols }, (_, colIndex) =>
+          rowIndex === 0 || colIndex === 0 ? null : 0
+        )
+      )
+    ),
     Array.from({ length: rows }, (_, rowIndex) =>
       Array.from({ length: cols }, (_, colIndex) =>
         rowIndex === 0 || colIndex === 0 ? null : 0
       )
-    )
-  );
+    ),
+  ];
 
   const valueToColor = (value) => {
     if (value === null) return ''; // For header cells
@@ -66,7 +73,7 @@ const App = () => {
   };
 
   const getGridStartingDay = () => {
-    const startingDays = [7, 4, 1]; // Saturday, Wednesday, Sunday
+    const startingDays = [7, 4, 1, 1]; // Saturday, Wednesday, Sunday, Sunday
     return startingDays[currentGridIndex];
   };
 
@@ -92,7 +99,7 @@ const App = () => {
   };
 
   const getGridTitle = () => {
-    const gridTitles = ['Habit 1', 'Habit 2', 'Third Habit'];
+    const gridTitles = ['Habit 1', 'Habit 2', 'Third Habit', 'Summary'];
     return gridTitles[currentGridIndex];
   };
   
