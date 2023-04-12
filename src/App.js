@@ -25,22 +25,22 @@ const App = () => {
   const cols = 8;
   const gridCount = 4;
   const habitGrids = Array.from({ length: gridCount }, () =>
-  Array.from({ length: rows }, (_, rowIndex) =>
-    Array.from({ length: cols }, (_, colIndex) =>
-      rowIndex === 0 || colIndex === 0 ? null : Math.random()
+    Array.from({ length: rows }, (_, rowIndex) =>
+      Array.from({ length: cols }, (_, colIndex) =>
+        rowIndex === 0 || colIndex === 0 ? null : Math.random()
+      )
     )
-  )
-);
+  );
 
-const summaryGrid = Array.from({ length: rows }, (_, rowIndex) =>
-  Array.from({ length: cols }, (_, colIndex) =>
-    rowIndex === 0 || colIndex === 0
-      ? null
-      : habitGrids.reduce((acc, grid) => acc + grid[rowIndex][colIndex], 0) / gridCount
-  )
-);
+  const summaryGrid = Array.from({ length: rows }, (_, rowIndex) =>
+    Array.from({ length: cols }, (_, colIndex) =>
+      rowIndex === 0 || colIndex === 0
+        ? null
+        : habitGrids.reduce((acc, grid) => acc + grid[rowIndex][colIndex], 0) / gridCount
+    )
+  );
 
-const initialGrid = [...habitGrids, summaryGrid];
+  const initialGrid = [...habitGrids, summaryGrid];
 
   const valueToColor = (value) => {
     if (value === null) return ''; // For header cells
@@ -77,8 +77,8 @@ const initialGrid = [...habitGrids, summaryGrid];
         const newGrids = prevGrids.map((grid, gridIndex) =>
           gridIndex === currentGridIndex
             ? grid.map((rowArr, i) =>
-                rowArr.map((cell, j) => (i === row && j === col ? !cell : cell))
-              )
+              rowArr.map((cell, j) => (i === row && j === col ? !cell : cell))
+            )
             : grid
         );
         return newGrids;
@@ -123,10 +123,10 @@ const initialGrid = [...habitGrids, summaryGrid];
     setGridTitles(newGridTitles);
     localStorage.setItem("gridTitles", JSON.stringify(newGridTitles));
   };
-  
+
   const switchToGrid = (index) => {
     setCurrentGridIndex(index);
-  }; 
+  };
 
 
   return (
@@ -140,40 +140,40 @@ const initialGrid = [...habitGrids, summaryGrid];
             onChange={updateGridTitle}
           />
         </div>
-      <div className="grid-container">
-        {grids[currentGridIndex].map((rowArr, rowIndex) => (
-          <div key={rowIndex} className="grid-row">
-            {rowArr.map((value, colIndex) => (
-              <GridButton
-                key={`${rowIndex}-${colIndex}`}
-                row={rowIndex}
-                col={colIndex}
-                toggleButton={toggleButton}
-                value={value}
-                label={getButtonLabel(rowIndex, colIndex)}
-                color={valueToColor(value)}
-                disabled={rowIndex === 0 || colIndex === 0}
-                isReadOnly={currentGridIndex === gridCount - 1}
-              />
-            ))}
+        <div className="grid-container">
+          {grids[currentGridIndex].map((rowArr, rowIndex) => (
+            <div key={rowIndex} className="grid-row">
+              {rowArr.map((value, colIndex) => (
+                <GridButton
+                  key={`${rowIndex}-${colIndex}`}
+                  row={rowIndex}
+                  col={colIndex}
+                  toggleButton={toggleButton}
+                  value={value}
+                  label={getButtonLabel(rowIndex, colIndex)}
+                  color={valueToColor(value)}
+                  disabled={rowIndex === 0 || colIndex === 0}
+                  isReadOnly={currentGridIndex === gridCount - 1}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="grid-switcher">
+        {Array.from({ length: gridCount }).map((_, index) => (
+          <div key={index} className="grid-switcher-item">
+            <button
+              className={`grid-switcher-button${currentGridIndex === index ? ' active' : ''}`}
+              onClick={() => switchToGrid(index)}
+            >
+              {gridTitles[index]}
+            </button>
           </div>
         ))}
       </div>
     </div>
-    <div className="grid-switcher">
-      {Array.from({ length: gridCount }).map((_, index) => (
-        <div key={index} className="grid-switcher-item">
-          <button
-            className={`grid-switcher-button${currentGridIndex === index ? ' active' : ''}`}
-            onClick={() => switchToGrid(index)}
-          >
-            {gridTitles[index]}
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+  );
 };
 
 export default App;
