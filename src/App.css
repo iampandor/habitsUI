@@ -1,3 +1,9 @@
+body {
+    background-color: #F5F5F5;
+    color: #333333;
+    font-family: 'Arial', sans-serif;
+}
+
 .App {
     font-family: sans-serif;
     text-align: center;
@@ -15,27 +21,24 @@
 }
 
 .grid-button {
+    background-color: #333333;
     width: 100px;
     height: 30px;
     margin: 3px;
     border: 1px solid #ccc;
-    background-color: #f0f0f0;
     cursor: pointer;
 }
 
 .grid-button.on {
     background-color: #4caf50;
-    color: white;
 }
 
 .grid-button.off {
     background-color: #f44336;
-    color: white;
 }
 
 .grid-button.header {
-    background-color: #3f51b5;
-    color: white;
+    background-color: #8BC34A;
     cursor: default;
 }
 
@@ -46,9 +49,11 @@
 }
 
 .switch-button {
+    background-color: #FFE082;
     margin-left: 1rem;
     padding: 0.5rem 1rem;
     font-size: 1rem;
+    border: none;
     cursor: pointer;
 }
 
@@ -69,13 +74,20 @@
 }
 
 .grid-switcher-button {
+    background-color: #FF7043;
     display: block;
     margin-bottom: 0.5rem;
     padding: 0.5rem 1rem;
     font-size: 1rem;
     cursor: pointer;
+    border: none;
 }
 
 .grid-switcher-button.active {
+    color: #333333;
     font-weight: bold;
+}
+
+.grid-switcher-title-input {
+    color: #333333;
 }

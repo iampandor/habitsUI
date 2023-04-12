@@ -112,10 +112,6 @@ const App = () => {
     }
   };
 
-  const getGridTitle = () => {
-    return gridTitles[currentGridIndex];
-  };
-
   const updateGridTitle = (e) => {
     const newTitle = e.target.value;
     const newGridTitles = [...gridTitles];
