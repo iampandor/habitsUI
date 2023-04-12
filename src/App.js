@@ -19,6 +19,12 @@ const GridButton = ({ row, col, toggleButton, value, label, color, disabled, isR
   );
 };
 
+const valueToColor = (value) => {
+  if (value === null) return ''; // For header cells
+  const r = Math.round((1 - value) * 255);
+  const g = Math.round(value * 255);
+  return `rgb(${r}, ${g}, 0)`;
+};
 
 const App = () => {
   const rows = 7;
@@ -40,28 +46,40 @@ const App = () => {
     )
   );
 
-  const initialGrid = [...habitGrids, summaryGrid];
+  const initialGrid = [...habitGrids];
 
-  const valueToColor = (value) => {
-    if (value === null) return ''; // For header cells
-    const r = Math.round((1 - value) * 255);
-    const g = Math.round(value * 255);
-    return `rgb(${r}, ${g}, 0)`;
+  const useLocalStorageState = (key, defaultValue) => {
+    const [value, setValue] = useState(() => {
+      const storedValue = localStorage.getItem(key);
+      return storedValue ? JSON.parse(storedValue) : defaultValue;
+    });
+
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(value));
+    }, [key, value]);
+
+    return [value, setValue];
   };
 
-  const [grids, setGrids] = useState(() => {
-    const savedGrids = localStorage.getItem('gridStates');
-    return savedGrids ? JSON.parse(savedGrids) : initialGrid;
-  });
+  const [grids, setGrids] = useLocalStorageState("gridStates", initialGrid);
+  const [gridTitles, setGridTitles] = useLocalStorageState("gridTitles", [
+    "Habit 1",
+    "Habit 2",
+    "Third Habit",
+    "Summary",
+  ]);
 
-  const [gridTitles, setGridTitles] = useState(
-    JSON.parse(localStorage.getItem("gridTitles")) || [
-      "Habit 1",
-      "Habit 2",
-      "Third Habit",
-      "Summary",
-    ]
-  );
+  const calculateSummaryGrid = () => {
+    return grids[0].map((rowArr, rowIndex) =>
+      rowArr.map((_, colIndex) =>
+        rowIndex === 0 || colIndex === 0
+          ? null
+          : grids
+            .slice(0, gridCount - 1) // Exclude the last grid (summary grid)
+            .reduce((acc, grid) => acc + grid[rowIndex][colIndex], 0) / (gridCount - 1)
+      )
+    );
+  };
 
   const [currentGridIndex, setCurrentGridIndex] = useState(0);
 
@@ -137,7 +155,10 @@ const App = () => {
           />
         </div>
         <div className="grid-container">
-          {grids[currentGridIndex].map((rowArr, rowIndex) => (
+          {(currentGridIndex === gridCount - 1
+            ? calculateSummaryGrid()
+            : grids[currentGridIndex]
+          ).map((rowArr, rowIndex) => (
             <div key={rowIndex} className="grid-row">
               {rowArr.map((value, colIndex) => (
                 <GridButton
@@ -157,13 +178,13 @@ const App = () => {
         </div>
       </div>
       <div className="grid-switcher">
-        {Array.from({ length: gridCount }).map((_, index) => (
+        {gridTitles.map((title, index) => (
           <div key={index} className="grid-switcher-item">
             <button
               className={`grid-switcher-button${currentGridIndex === index ? ' active' : ''}`}
               onClick={() => switchToGrid(index)}
             >
-              {gridTitles[index]}
+              {title}
             </button>
           </div>
         ))}
