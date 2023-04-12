@@ -124,46 +124,22 @@ const initialGrid = [...habitGrids, summaryGrid];
     localStorage.setItem("gridTitles", JSON.stringify(newGridTitles));
   };
   
-  const switchGrid = () => {
-    setCurrentGridIndex((prevIndex) => {
-      const newIndex = (prevIndex + 1) % gridCount;
-  
-      if (newIndex === gridCount - 1) {
-        // If the new index is the summary grid, update its values
-        const newGrids = [...grids];
-        for (let row = 1; row < rows; row++) {
-          for (let col = 1; col < cols; col++) {
-            const sum = newGrids
-              .slice(0, gridCount - 1)
-              .reduce((acc, grid) => acc + grid[row][col], 0);
-            const mean = sum / (gridCount - 1);
-            newGrids[newIndex][row][col] = mean;
-          }
-        }
-        setGrids(newGrids);
-        localStorage.setItem("grids", JSON.stringify(newGrids));
-      }
-  
-      return newIndex;
-    });
-  };  
+  const switchToGrid = (index) => {
+    setCurrentGridIndex(index);
+  }; 
 
 
   return (
     <div className="App">
-      <div className="title-container">
-        <h1>{getGridTitle()}</h1>
-        {currentGridIndex !== gridCount - 1 && (
+      <div className="main-container">
+        <div className="title-container">
+          <h1>{getGridTitle()}</h1>
           <input
             className="title-input"
             value={gridTitles[currentGridIndex]}
             onChange={updateGridTitle}
           />
-        )}
-        <button className="switch-button" onClick={switchGrid}>
-          Switch Grid
-        </button>
-      </div>
+        </div>
       <div className="grid-container">
         {grids[currentGridIndex].map((rowArr, rowIndex) => (
           <div key={rowIndex} className="grid-row">
@@ -184,6 +160,18 @@ const initialGrid = [...habitGrids, summaryGrid];
         ))}
       </div>
     </div>
+    <div className="grid-switcher">
+      {Array.from({ length: gridCount }).map((_, index) => (
+        <button
+          key={index}
+          className={`grid-switcher-button${currentGridIndex === index ? ' active' : ''}`}
+          onClick={() => switchToGrid(index)}
+        >
+          Grid {index + 1}
+        </button>
+      ))}
+    </div>
+  </div>
   );
 };
 
