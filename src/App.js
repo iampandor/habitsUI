@@ -133,7 +133,7 @@ const initialGrid = [...habitGrids, summaryGrid];
     <div className="App">
       <div className="main-container">
         <div className="title-container">
-          <h1>{getGridTitle()}</h1>
+          <h1>Hábitos UI</h1>
           <input
             className="title-input"
             value={gridTitles[currentGridIndex]}
@@ -162,17 +162,18 @@ const initialGrid = [...habitGrids, summaryGrid];
     </div>
     <div className="grid-switcher">
       {Array.from({ length: gridCount }).map((_, index) => (
-        <button
-          key={index}
-          className={`grid-switcher-button${currentGridIndex === index ? ' active' : ''}`}
-          onClick={() => switchToGrid(index)}
-        >
-          Grid {index + 1}
-        </button>
+        <div key={index} className="grid-switcher-item">
+          <button
+            className={`grid-switcher-button${currentGridIndex === index ? ' active' : ''}`}
+            onClick={() => switchToGrid(index)}
+          >
+            {gridTitles[index]}
+          </button>
+        </div>
       ))}
     </div>
   </div>
-  );
+);
 };
 
 export default App;
