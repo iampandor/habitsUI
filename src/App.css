@@ -1,59 +1,93 @@
+body {
+    background-color: #F5F5F5;
+    color: #333333;
+    font-family: 'Arial', sans-serif;
+}
+
 .App {
-  font-family: sans-serif;
-  text-align: center;
+    font-family: sans-serif;
+    text-align: center;
 }
 
 .grid-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
 }
 
 .grid-row {
-  display: flex;
+    display: flex;
 }
 
 .grid-button {
-  width: 100px;
-  height: 30px;
-  margin: 3px;
-  border: 1px solid #ccc;
-  background-color: #f0f0f0;
-  cursor: pointer;
+    background-color: #333333;
+    width: 100px;
+    height: 30px;
+    margin: 3px;
+    border: 1px solid #ccc;
+    cursor: pointer;
 }
 
 .grid-button.on {
-  background-color: #4caf50;
-  color: white;
+    background-color: #4caf50;
 }
 
 .grid-button.off {
-  background-color: #f44336;
-  color: white;
+    background-color: #f44336;
 }
 
 .grid-button.header {
-  background-color: #3f51b5;
-  color: white;
-  cursor: default;
+    background-color: #8BC34A;
+    cursor: default;
 }
 
 .title-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .switch-button {
-  margin-left: 1rem;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
+    background-color: #FFE082;
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
 }
 
 .title-input {
-  margin-left: 1rem;
-  padding: 0.25rem;
-  font-size: 1rem;
+    margin-left: 1rem;
+    padding: 0.25rem;
+    font-size: 1rem;
+}
+
+.main-container {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.grid-switcher {
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+.grid-switcher-button {
+    background-color: #FF7043;
+    display: block;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+}
+
+.grid-switcher-button.active {
+    color: #333333;
+    font-weight: bold;
+}
+
+.grid-switcher-title-input {
+    color: #333333;
 }
