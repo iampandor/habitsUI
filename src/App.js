@@ -93,6 +93,26 @@ const App = () => {
     setCurrentGridIndex(index);
   };
 
+  const addGrid = () => {
+    const newGrid = Array.from({ length: rows }, (_, rowIndex) =>
+      Array.from({ length: cols }, (_, colIndex) =>
+        rowIndex === 0 || colIndex === 0 ? null : Math.random()
+      )
+    );
+    setGrids([...grids, newGrid]);
+    setGridTitles([...gridTitles, `Habit ${gridTitles.length + 1}`]);
+  };
+
+  // Add this function to your App component
+  const removeGrid = () => {
+    if (grids.length <= 1) return; // Prevent removing the last grid
+    const updatedGrids = grids.filter((_, index) => index !== currentGridIndex);
+    const updatedGridTitles = gridTitles.filter((_, index) => index !== currentGridIndex);
+    setGrids(updatedGrids);
+    setGridTitles(updatedGridTitles);
+    setCurrentGridIndex(0);
+  };
+
 
   return (
     <div className="App">
@@ -139,6 +159,16 @@ const App = () => {
             </button>
           </div>
         ))}
+        <div className="grid-switcher-item">
+          <button className="grid-switcher-button" onClick={addGrid}>
+            Add
+      </button>
+        </div>
+        <div className="grid-switcher-item">
+          <button className="grid-switcher-button" onClick={removeGrid}>
+            Remove
+      </button>
+        </div>
       </div>
     </div>
   );
