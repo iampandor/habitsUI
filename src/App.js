@@ -1,30 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import GridButton from './GridButton';
+import { valueToColor, getButtonLabel } from './utils';
 import './App.css';
-
-const GridButton = ({ row, col, toggleButton, value, label, color, disabled, isReadOnly }) => {
-  const handleClick = () => {
-    if (isReadOnly) return;
-    toggleButton(row, col);
-  };
-
-  return (
-    <button
-      className={`grid-button ${row === 0 || col === 0 ? 'header' : ''}`}
-      onClick={handleClick}
-      style={{ backgroundColor: color }}
-      disabled={disabled || isReadOnly}
-    >
-      {label}
-    </button>
-  );
-};
-
-const valueToColor = (value) => {
-  if (value === null) return ''; // For header cells
-  const r = Math.round((1 - value) * 255);
-  const g = Math.round(value * 255);
-  return `rgb(${r}, ${g}, 0)`;
-};
 
 const App = () => {
   const rows = 7;
@@ -104,32 +81,6 @@ const App = () => {
     }
   };
 
-  const getGridStartingDay = () => {
-    const startingDays = [7, 4, 1, 1]; // Saturday, Wednesday, Sunday, Sunday
-    return startingDays[currentGridIndex];
-  };
-
-  const getButtonLabel = (row, col) => {
-    if (row === 0) {
-      const days = [
-        'Week',
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-      ];
-      return days[col];
-    } else if (col === 0) {
-      return row === 0 ? 'Week' : row.toString();
-    } else {
-      const dayNumber = (row - 1) * 7 + col - getGridStartingDay() + 1;
-      return dayNumber >= 1 && dayNumber <= 31 ? dayNumber.toString() : '';
-    }
-  };
-
   const updateGridTitle = (e) => {
     const newTitle = e.target.value;
     const newGridTitles = [...gridTitles];
@@ -167,7 +118,7 @@ const App = () => {
                   col={colIndex}
                   toggleButton={toggleButton}
                   value={value}
-                  label={getButtonLabel(rowIndex, colIndex)}
+                  label={getButtonLabel(rowIndex, colIndex, currentGridIndex)}
                   color={valueToColor(value)}
                   disabled={rowIndex === 0 || colIndex === 0}
                   isReadOnly={currentGridIndex === gridCount - 1}
