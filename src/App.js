@@ -96,7 +96,7 @@ const App = () => {
       )
     );
     setGrids([...grids, newGrid]);
-    setGridTitles([...gridTitles.slice(0,-1), `Habit ${gridTitles.length}`, gridTitles.slice(-1)]);
+    setGridTitles([...gridTitles.slice(0, -1), `Habit ${gridTitles.length}`, gridTitles.slice(-1)]);
   };
 
   // Add this function to your App component
@@ -161,9 +161,11 @@ const App = () => {
       </button>
         </div>
         <div className="grid-switcher-item">
-          <button className="grid-switcher-button" onClick={removeGrid}>
-            Remove
-      </button>
+          {currentGridIndex !== grids.length - 1 && (
+            <button className="grid-switcher-button" onClick={removeGrid}>
+              Remove
+            </button>
+          )}
         </div>
       </div>
     </div>
