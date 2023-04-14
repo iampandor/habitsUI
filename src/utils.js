@@ -9,7 +9,11 @@ export const valueToColor = (value) => {
 };
 
 export const getGridStartingDay = () => {
-    return 7;
+    const today = new Date();
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    let day = new Date(Date.parse( mm + ' 01 ' + yyyy + ' 10:00:00 GMT')).getDay()
+    return day + 1;
 };
 
 export const getButtonLabel = (row, col, currentGridIndex) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GridButton = ({ row, col, toggleButton, value, label, color, disabled, isReadOnly }) => {
+const GridButton = ({ row, col, toggleButton, label, color, disabled, isReadOnly }) => {
   const handleClick = () => {
     if (isReadOnly) return;
     toggleButton(row, col);
