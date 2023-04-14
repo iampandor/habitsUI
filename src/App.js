@@ -10,7 +10,7 @@ const App = () => {
   const habitGrids = Array.from({ length: gridCount }, () =>
     Array.from({ length: rows }, (_, rowIndex) =>
       Array.from({ length: cols }, (_, colIndex) =>
-        rowIndex === 0 || colIndex === 0 ? null : Math.round(Math.random())
+        rowIndex === 0 || colIndex === 0 ? null : -1
       )
     )
   );
@@ -92,7 +92,7 @@ const App = () => {
     }
     const newGrid = Array.from({ length: rows }, (_, rowIndex) =>
       Array.from({ length: cols }, (_, colIndex) =>
-        rowIndex === 0 || colIndex === 0 ? null : Math.round(Math.random())
+        rowIndex === 0 || colIndex === 0 ? null : -1
       )
     );
     setGrids([...grids, newGrid]);
