@@ -6,7 +6,7 @@ import './App.css';
 const App = () => {
   const rows = 7;
   const cols = 8;
-  const gridCount = 4;
+  const gridCount = 2;
   const habitGrids = Array.from({ length: gridCount }, () =>
     Array.from({ length: rows }, (_, rowIndex) =>
       Array.from({ length: cols }, (_, colIndex) =>
@@ -33,8 +33,6 @@ const App = () => {
   const [grids, setGrids] = useLocalStorageState("gridStates", initialGrid);
   const [gridTitles, setGridTitles] = useLocalStorageState("gridTitles", [
     "Habit 1",
-    "Habit 2",
-    "Third Habit",
     "Summary",
   ]);
 
@@ -109,6 +107,17 @@ const App = () => {
     setCurrentGridIndex(0);
   };
 
+  const resetGrids = () => {
+    setGrids((prevGrids) => {
+      const newGrids = prevGrids.map((grid) =>
+        grid.map((rowArr, rowIndex) =>
+          rowArr.map((cell, colIndex) => (rowIndex === 0 || colIndex === 0 ? null : -1))
+        )
+      );
+      return newGrids;
+    });
+  };
+
 
   return (
     <div className="App">
@@ -170,6 +179,11 @@ const App = () => {
               Remove
             </button>
           )}
+        </div>
+        <div className="grid-switcher-item">
+          <button className="grid-switcher-button" onClick={resetGrids}>
+            Reset all
+      </button>
         </div>
       </div>
     </div>
