@@ -87,13 +87,16 @@ const App = () => {
   };
 
   const addGrid = () => {
+    if (grids.length >= 11) {
+      return;
+    }
     const newGrid = Array.from({ length: rows }, (_, rowIndex) =>
       Array.from({ length: cols }, (_, colIndex) =>
         rowIndex === 0 || colIndex === 0 ? null : Math.round(Math.random())
       )
     );
     setGrids([...grids, newGrid]);
-    setGridTitles([...gridTitles, `Habit ${gridTitles.length + 1}`]);
+    setGridTitles([...gridTitles.slice(0,-1), `Habit ${gridTitles.length}`, gridTitles.slice(-1)]);
   };
 
   // Add this function to your App component
