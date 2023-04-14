@@ -5,12 +5,11 @@ export const valueToColor = (value) => {
     return `rgb(${r}, ${g}, 0)`;
   };
   
-  export const getGridStartingDay = (currentGridIndex) => {
-    const startingDays = [7, 4, 1, 1];
-    return startingDays[currentGridIndex];
+  export const getGridStartingDay = () => {
+    return 1;
   };
   
-  export const getButtonLabel = (row, col, currentGridIndex) => {
+  export const getButtonLabel = (row, col) => {
     if (row === 0) {
       const days = [
         'Week',
@@ -26,7 +25,7 @@ export const valueToColor = (value) => {
     } else if (col === 0) {
       return row === 0 ? 'Week' : row.toString();
     } else {
-      const dayNumber = (row - 1) * 7 + col - getGridStartingDay(currentGridIndex) + 1;
+      const dayNumber = (row - 1) * 7 + col - getGridStartingDay() + 1;
       return dayNumber >= 1 && dayNumber <= 31 ? dayNumber.toString() : '';
     }
   };

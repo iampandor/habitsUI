@@ -10,16 +10,8 @@ const App = () => {
   const habitGrids = Array.from({ length: gridCount }, () =>
     Array.from({ length: rows }, (_, rowIndex) =>
       Array.from({ length: cols }, (_, colIndex) =>
-        rowIndex === 0 || colIndex === 0 ? null : Math.random()
+        rowIndex === 0 || colIndex === 0 ? null : Math.round(Math.random())
       )
-    )
-  );
-
-  const summaryGrid = Array.from({ length: rows }, (_, rowIndex) =>
-    Array.from({ length: cols }, (_, colIndex) =>
-      rowIndex === 0 || colIndex === 0
-        ? null
-        : habitGrids.reduce((acc, grid) => acc + grid[rowIndex][colIndex], 0) / gridCount
     )
   );
 
@@ -47,13 +39,14 @@ const App = () => {
   ]);
 
   const calculateSummaryGrid = () => {
+    const lastGridIndex = grids.length - 1;
     return grids[0].map((rowArr, rowIndex) =>
       rowArr.map((_, colIndex) =>
         rowIndex === 0 || colIndex === 0
           ? null
           : grids
-            .slice(0, gridCount - 1) // Exclude the last grid (summary grid)
-            .reduce((acc, grid) => acc + grid[rowIndex][colIndex], 0) / (gridCount - 1)
+            .slice(0, lastGridIndex) // Exclude the last grid (summary grid)
+            .reduce((acc, grid) => acc + grid[rowIndex][colIndex], 0) / lastGridIndex
       )
     );
   };
@@ -93,6 +86,29 @@ const App = () => {
     setCurrentGridIndex(index);
   };
 
+  const addGrid = () => {
+    if (grids.length >= 11) {
+      return;
+    }
+    const newGrid = Array.from({ length: rows }, (_, rowIndex) =>
+      Array.from({ length: cols }, (_, colIndex) =>
+        rowIndex === 0 || colIndex === 0 ? null : Math.round(Math.random())
+      )
+    );
+    setGrids([...grids, newGrid]);
+    setGridTitles([...gridTitles.slice(0, -1), `Habit ${gridTitles.length}`, gridTitles.slice(-1)]);
+  };
+
+  // Add this function to your App component
+  const removeGrid = () => {
+    if (grids.length <= 2) return; // Prevent removing the last grid
+    const updatedGrids = grids.filter((_, index) => index !== currentGridIndex);
+    const updatedGridTitles = gridTitles.filter((_, index) => index !== currentGridIndex);
+    setGrids(updatedGrids);
+    setGridTitles(updatedGridTitles);
+    setCurrentGridIndex(0);
+  };
+
 
   return (
     <div className="App">
@@ -106,7 +122,7 @@ const App = () => {
           />
         </div>
         <div className="grid-container">
-          {(currentGridIndex === gridCount - 1
+          {(currentGridIndex === grids.length - 1
             ? calculateSummaryGrid()
             : grids[currentGridIndex]
           ).map((rowArr, rowIndex) => (
@@ -118,10 +134,10 @@ const App = () => {
                   col={colIndex}
                   toggleButton={toggleButton}
                   value={value}
-                  label={getButtonLabel(rowIndex, colIndex, currentGridIndex)}
+                  label={getButtonLabel(rowIndex, colIndex)}
                   color={valueToColor(value)}
-                  disabled={rowIndex === 0 || colIndex === 0}
-                  isReadOnly={currentGridIndex === gridCount - 1}
+                  disabled={rowIndex === 0 || colIndex === 0 || currentGridIndex === grids.length - 1}
+                  isReadOnly={currentGridIndex === grids.length - 1}
                 />
               ))}
             </div>
@@ -139,6 +155,20 @@ const App = () => {
             </button>
           </div>
         ))}
+        <div className="grid-switcher-item">
+          {grids.length < 11 && (
+            <button className="grid-switcher-button" onClick={addGrid}>
+              Add
+            </button>
+          )}
+        </div>
+        <div className="grid-switcher-item">
+          {currentGridIndex !== grids.length - 1 && grids.length > 2 && (
+            <button className="grid-switcher-button" onClick={removeGrid}>
+              Remove
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
