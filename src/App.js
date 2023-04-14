@@ -156,12 +156,14 @@ const App = () => {
           </div>
         ))}
         <div className="grid-switcher-item">
-          <button className="grid-switcher-button" onClick={addGrid}>
-            Add
-      </button>
+          {grids.length < 11 && (
+            <button className="grid-switcher-button" onClick={addGrid}>
+              Add
+            </button>
+          )}
         </div>
         <div className="grid-switcher-item">
-          {currentGridIndex !== grids.length - 1 && (
+          {currentGridIndex !== grids.length - 1 && grids.length > 2 && (
             <button className="grid-switcher-button" onClick={removeGrid}>
               Remove
             </button>
