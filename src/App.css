@@ -1,19 +1,44 @@
 body {
-    background-color: #F5F5F5;
-    color: #333333;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .App {
-    font-family: sans-serif;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f5f5f5;
+}
+
+.main-container {
+    max-width: 900px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.title-input {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    outline: none;
 }
 
 .grid-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 1rem;
 }
 
 .grid-row {
@@ -21,73 +46,48 @@ body {
 }
 
 .grid-button {
-    background-color: #333333;
-    width: 100px;
-    height: 30px;
-    margin: 3px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-}
-
-.grid-button.on {
-    background-color: #4caf50;
-}
-
-.grid-button.off {
-    background-color: #f44336;
-}
-
-.grid-button.header {
-    background-color: #8BC34A;
-    cursor: default;
-}
-
-.title-container {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.switch-button {
-    background-color: #FFE082;
-    margin-left: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border: none;
+    height: 40px;
+    width: 400px;
+    border: 1px solid #ccc;
     cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s;
 }
 
-.title-input {
-    margin-left: 1rem;
-    padding: 0.25rem;
-    font-size: 1rem;
+.grid-button:active {
+    transform: scale(0.95);
 }
 
-.main-container {
-    display: inline-block;
-    vertical-align: top;
-}
-
+.grid-control,
 .grid-switcher {
-    display: inline-block;
-    margin-left: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+.grid-switcher-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 100px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s;
 }
 
 .grid-switcher-button {
-    background-color: #FF7043;
-    display: block;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem 1rem;
+    height: 100%;
+    width: 100%;
     font-size: 1rem;
-    cursor: pointer;
-    border: none;
-}
-
-.grid-switcher-button.active {
-    color: #333333;
-    font-weight: bold;
-}
-
-.grid-switcher-title-input {
-    color: #333333;
+    border: none
 }

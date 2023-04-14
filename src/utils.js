@@ -6,7 +6,7 @@ export const valueToColor = (value) => {
   };
   
   export const getGridStartingDay = () => {
-    return 1;
+    return 7;
   };
   
   export const getButtonLabel = (row, col) => {

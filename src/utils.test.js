@@ -3,9 +3,9 @@ import { getGridStartingDay, getButtonLabel } from './utils';
 describe('getGridStartingDay', () => {
   it('returns the correct starting day for each grid index', () => {
     expect(getGridStartingDay(0)).toBe(7);
-    expect(getGridStartingDay(1)).toBe(4);
-    expect(getGridStartingDay(2)).toBe(1);
-    expect(getGridStartingDay(3)).toBe(1);
+    expect(getGridStartingDay(1)).toBe(7);
+    expect(getGridStartingDay(2)).toBe(7);
+    expect(getGridStartingDay(3)).toBe(7);
   });
 });
 

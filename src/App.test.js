@@ -10,7 +10,7 @@ const switchToGrid = (gridTitle) => {
 test('renders grid and switch buttons', () => {
   render(<App />);
   const gridButtons = screen.getAllByRole('button', { class: "" });
-  expect(gridButtons.length).toBe(60);
+  expect(gridButtons.length).toBe(62);
 });
 
 test('switches between grids', () => {

@@ -155,6 +155,8 @@ const App = () => {
             </button>
           </div>
         ))}
+      </div>
+      <div className="grid-control">
         <div className="grid-switcher-item">
           {grids.length < 11 && (
             <button className="grid-switcher-button" onClick={addGrid}>
